@@ -5,10 +5,7 @@ import { NotesService } from 'src/notes/notes.service';
 
 @Controller('/users')
 export class UsersController {
-  constructor(
-    private usersService: UsersService,
-    private notesService: NotesService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -23,10 +20,5 @@ export class UsersController {
   @Get('/nombre')
   findByName(@Query('name') name: string) {
     return this.usersService.findByName(name);
-  }
-
-  @Get()
-  getNotesForId(@Query('id') userId: string) {
-    return;
   }
 }

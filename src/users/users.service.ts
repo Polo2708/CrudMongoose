@@ -13,10 +13,10 @@ export class UsersService {
   }
 
   async getAllUsers() {
-    return this.userModel.find().exec();
+    return this.userModel.find().populate('notes').exec();
   }
 
   async findByName(name: string): Promise<User[]> {
-    return this.userModel.find({ name }).exec();
+    return this.userModel.find({ name }).populate('notes').exec();
   }
 }

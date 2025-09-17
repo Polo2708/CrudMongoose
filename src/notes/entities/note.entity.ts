@@ -4,7 +4,10 @@ import { Types } from 'mongoose';
 @Schema()
 export class Notes {
   @Prop({ required: true })
-  nota: string;
+  title: string;
+
+  @Prop({ required: true })
+  content: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;

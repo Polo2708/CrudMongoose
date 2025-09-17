@@ -1,26 +1,34 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import { CreateNoteDto } from './dto/create-note.dto';
 
 @Controller('/notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @Post()
-  createNote(
-    @Query('userId') userId: string,
-    @Body() CreateNoteDto: CreateNoteDto,
-  ) {
-    return this.notesService.createNoteForUser(userId, CreateNoteDto);
+  createNote(@Body() body: { userId: string; title: string; content: string }) {
+    return this.notesService.createNote(body.userId, body.title, body.content);
   }
 
-  @Get()
-  getNotes() {
-    return this.notesService.getALlNoe();
+  @Get('user/:id')
+  getByUser(@Param('id') id: string) {
+    return this.notesService.getNoteByUserId(id);
   }
+  // @Post()
+  // createNote(
+  //   @Query('userId') userId: string,
+  //   @Body() CreateNoteDto: CreateNoteDto,
+  // ) {
+  //   return this.notesService.createNoteForUser(userId, CreateNoteDto);
+  // }
 
-  @Get('user-notes')
-  getUserNote(@Query('userId') userId: string) {
-    return this.notesService.getUserWithNote(userId);
-  }
+  // @Get()
+  // getNotes() {
+  //   return this.notesService.getALlNoe();
+  // }
+
+  // @Get(':id')
+  // getOneNote(@Param('id') id: string) {
+  //   return this.notesService.getNoteByUserId(id);
+  // }
 }
