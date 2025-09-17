@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { NotesService } from './notes.service';
 
 @Controller('/notes')
@@ -10,25 +19,37 @@ export class NotesController {
     return this.notesService.createNote(body.userId, body.title, body.content);
   }
 
+  @Patch(':id')
+  updateNotesById(
+    @Param('id') id: string,
+    @Body() body: { title: string; content: string },
+  ) {
+    return this.notesService.updateNotes(id, body.title, body.content);
+  }
+
+  @Get()
+  getAllNotes() {
+    return this.notesService.getAllNotes();
+  }
+
   @Get('user/:id')
   getByUser(@Param('id') id: string) {
     return this.notesService.getNoteByUserId(id);
   }
-  // @Post()
-  // createNote(
-  //   @Query('userId') userId: string,
-  //   @Body() CreateNoteDto: CreateNoteDto,
-  // ) {
-  //   return this.notesService.createNoteForUser(userId, CreateNoteDto);
-  // }
 
-  // @Get()
-  // getNotes() {
-  //   return this.notesService.getALlNoe();
-  // }
+  @Get('title/:title')
+  getNoteForTitle(@Param('title') title: string) {
+    console.log(title);
+    return this.notesService.getNotesForTitle(title);
+  }
 
-  // @Get(':id')
-  // getOneNote(@Param('id') id: string) {
-  //   return this.notesService.getNoteByUserId(id);
-  // }
+  @Delete(':id')
+  deleteNote(@Param('id') id: string) {
+    const clean = this.notesService.cleanNote(id);
+    if (!clean) {
+      return { message: `Nota con id ${id} no encontrada` };
+    }
+
+    return { message: `Nota eliminada correctamente` };
+  }
 }

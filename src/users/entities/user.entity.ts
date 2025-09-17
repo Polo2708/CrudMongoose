@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 @Schema()
 export class User {
-  @Prop({ require: true })
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
