@@ -14,10 +14,6 @@ export class PeliculasService {
   ) {}
 
   async create(peli: CreatePeliculaDto) {
-    await this.peliculaModel.deleteMany({
-      $or: [{ user: { $exists: false } }, { user: null }],
-    });
-
     const user = await this.userService.findByOne(peli.user);
     if (!user)
       throw new NotFoundException(`Usuario con id: ${user} no encontrado`);
@@ -33,9 +29,12 @@ export class PeliculasService {
     return this.peliculaModel.find().populate('user', 'name email');
   }
 
-  findOne(id: string) {
-    console.log(id);
-    return this.peliculaModel.findById(id).exec();
+  findOneName(title: string) {
+    return this.peliculaModel
+      .find({
+        title: { $regex: title, $options: 'i' },
+      })
+      .exec();
   }
 
   updatePelis(

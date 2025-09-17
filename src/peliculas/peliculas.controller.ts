@@ -24,9 +24,9 @@ export class PeliculasController {
     return this.peliculasService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.peliculasService.findOne(id);
+  @Get('buscar/:title')
+  findOne(@Param('title') title: string) {
+    return this.peliculasService.findOneName(title);
   }
 
   @Patch(':id')
